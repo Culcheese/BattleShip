@@ -13,6 +13,8 @@ public class Board extends JPanel {
 	public static JPanel[][] playerPanels = new JPanel[10][10];
 	public static JPanel[][] cpuPanels = new JPanel[10][10];
 	public static ClickListener[][] clickers = new ClickListener[10][10];
+	public static JLabel playerText;
+	public static JLabel cpuText;
 	
 	public Board() throws IOException {
 		JFrame frame = new JFrame();
@@ -29,8 +31,9 @@ public class Board extends JPanel {
 		
 		//fill1 player
 		JPanel fill1 = new JPanel();
-		JLabel label = new JLabel("<html><h1><br></br>Player</h1></html>");
-		label.setFont(new Font("Calibri", Font.BOLD, 20));
+		JLabel label = new JLabel("<html><h1><br></br><div style='text-align: center;'>Player</div>Battleships: 5</h1></html>");
+		playerText = label;
+		label.setFont(new Font("Arial", Font.BOLD, 30));
 		fill1.add(label);
 		fill1.setBackground(Color.CYAN);
 		fill1.setMinimumSize(new Dimension(300, 200));
@@ -38,14 +41,17 @@ public class Board extends JPanel {
 		fill1.setPreferredSize(new Dimension(300, 200));
 
 		JPanel fill2 = new JPanel();
-		JLabel label2 = new JLabel("<html><h1><br></br>CPU</h1></html>");
-		label2.setFont(new Font("Calibri", Font.BOLD, 20));
+		JLabel label2 = new JLabel("<html><h1><br></br><div style='text-align: center;'>CPU</div>Battleships: 5</h1></html>", SwingConstants.CENTER);
+		cpuText = label2;
+		label2.setHorizontalAlignment(SwingConstants.CENTER);
+		label2.setFont(new Font("Arial", Font.BOLD, 30));
 		fill2.add(label2);
 		fill2.setBackground(Color.RED);
 		fill2.setMinimumSize(new Dimension(300, 200));
 		fill2.setMaximumSize(new Dimension(300, 200));
 		fill2.setPreferredSize(new Dimension(300, 200));
-
+		
+		
 		frame.add(fill1,c);
 		c.gridx = 1;
 		c.gridy = 0;

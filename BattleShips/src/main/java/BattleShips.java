@@ -27,7 +27,7 @@ public class BattleShips {
                cpuGrid[i][j] = " ";
             }
         }
-        
+                
         deployComputerShips();
 
         //Step 2 Deploy player ships
@@ -80,8 +80,10 @@ public class BattleShips {
         System.out.println("\nCOMPUTER'S TURN");
         //Guess co-ordinates
         int x = -1, y = -1;
-        do {
-            x = (int)(Math.random() * 10);
+        boolean repeat = false;
+        while((x < 0 || x >= numRows) || (y < 0 || y >= numCols) || repeat) {
+        	repeat = false;
+        	x = (int)(Math.random() * 10);
             y = (int)(Math.random() * 10);
 
             if ((x >= 0 && x < numRows) && (y >= 0 && y < numCols)) //valid guess
@@ -89,27 +91,35 @@ public class BattleShips {
                 if (playerGrid[x][y] == "x") //if player ship is already there; player loses ship
                 {
                     System.out.println("The Computer sunk one of your ships!");
-                    playerGrid[x][y] = "x";
+                    playerGrid[x][y] = "y";
                     Board.playerPanels[x][y].setBackground(Color.RED);
                     --BattleShips.playerShips;
-                    ++BattleShips.computerShips;
+					if(computerShips == 0)
+						gameOver();
+                    Board.playerText.setText("<html><h1><br></br><div style='text-align: center;'>Player</div>Battleships: " + playerShips + "</h1></html>");
                 }
                 else if (playerGrid[x][y] == " ") {
+                    playerGrid[x][y] = "y";
                     Board.playerPanels[x][y].setBackground(Color.GRAY);
                     System.out.println("Computer missed");
                 }
+                else {
+                	repeat = true;
+                }
             }
-        }while((x < 0 || x >= numRows) || (y < 0 || y >= numCols));  //keep re-prompting till valid guess
-        turn = 0;
+        } 
     }
 
     public static void gameOver(){
         System.out.println("Your ships: " + BattleShips.playerShips + " | Computer ships: " + BattleShips.computerShips);
-        if(BattleShips.playerShips > 0 && BattleShips.computerShips <= 0)
-            System.out.println("Hooray! You won the battle :)");
-        else
-            System.out.println("Sorry, you lost the battle");
-        System.out.println();
+        if(BattleShips.playerShips > 0 && BattleShips.computerShips <= 0) {
+            Board.playerText.setText("<html><h1><br></br><div style='text-align: center;'>Player</div>WINNER</h1></html>");
+            Board.cpuText.setText("<html><h1><br></br><div style='text-align: center;'>CPU</div>LOSER</h1></html>");
+        }
+        else {
+            Board.playerText.setText("<html><h1><br></br><div style='text-align: center;'>Player</div>LOSER</h1></html>");
+            Board.cpuText.setText("<html><h1><br></br><div style='text-align: center;'>CPU</div>WINNER</h1></html>");
+        }
    }
     
     public static class ConfirmListener extends MouseAdapter
@@ -123,13 +133,16 @@ public class BattleShips {
             				if(cpuGrid[i][j] == "x") {
             					Board.currentBox.setBackground(Color.RED);
             					computerShips--;
+            					if(computerShips == 0)
+            						gameOver();
+                                Board.cpuText.setText("<html><h1><br></br><div style='text-align: center;'>CPU</div>Battleships: " + computerShips + "</h1></html>");
             				}
             				else {
             					Board.currentBox.setBackground(Color.GRAY);
             				}
             				Board.currentBox.removeMouseListener(Board.clickers[i][j]);
             				Board.currentBox = null;
-            				BattleShips.computerTurn();
+            				computerTurn();
             			}
             		}
             	}
