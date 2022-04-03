@@ -4,7 +4,6 @@ import java.awt.Color;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.IOException;
-import java.util.*;
 
 public class BattleShips {
 	public static int turn = -1;
@@ -14,6 +13,7 @@ public class BattleShips {
     public static int computerShips;
     public static String[][] playerGrid = new String[numRows][numCols];
     public static String[][] cpuGrid = new String[numRows][numCols];
+    public static ConfirmListener listen;
 
     public static void main(String[] args) throws IOException{
         System.out.println("**** Welcome to Battle Ships game ****");
@@ -112,6 +112,7 @@ public class BattleShips {
 
     public static void gameOver(){
         System.out.println("Your ships: " + BattleShips.playerShips + " | Computer ships: " + BattleShips.computerShips);
+        Board.confirmListened.removeMouseListener(listen);
         if(BattleShips.playerShips > 0 && BattleShips.computerShips <= 0) {
             Board.playerText.setText("<html><h1><br></br><div style='text-align: center;'>Player</div>WINNER</h1></html>");
             Board.cpuText.setText("<html><h1><br></br><div style='text-align: center;'>CPU</div>LOSER</h1></html>");
@@ -135,14 +136,16 @@ public class BattleShips {
             					computerShips--;
             					if(computerShips == 0)
             						gameOver();
-                                Board.cpuText.setText("<html><h1><br></br><div style='text-align: center;'>CPU</div>Battleships: " + computerShips + "</h1></html>");
+            					else
+            						Board.cpuText.setText("<html><h1><br></br><div style='text-align: center;'>CPU</div>Battleships: " + computerShips + "</h1></html>");
             				}
             				else {
             					Board.currentBox.setBackground(Color.GRAY);
             				}
             				Board.currentBox.removeMouseListener(Board.clickers[i][j]);
             				Board.currentBox = null;
-            				computerTurn();
+            				if(computerShips > 0)
+            					computerTurn();
             			}
             		}
             	}

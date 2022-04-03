@@ -1,10 +1,7 @@
 package BattleShips;
-import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
-import java.awt.image.BufferedImage;
-import java.io.File;
 import java.io.IOException;
 
 public class Board extends JPanel {
@@ -15,6 +12,7 @@ public class Board extends JPanel {
 	public static ClickListener[][] clickers = new ClickListener[10][10];
 	public static JLabel playerText;
 	public static JLabel cpuText;
+	public static JButton confirmListened;
 	
 	public Board() throws IOException {
 		JFrame frame = new JFrame();
@@ -108,7 +106,9 @@ public class Board extends JPanel {
 		confirm.setPreferredSize(new Dimension(100, 50));
 		confirm.setMaximumSize(new Dimension(100, 50));
 		confirm.setMinimumSize(new Dimension(100, 50));
-		confirm.addMouseListener(new BattleShips.ConfirmListener());
+		BattleShips.listen = new BattleShips.ConfirmListener();
+		confirm.addMouseListener(BattleShips.listen);
+		confirmListened = confirm;
 		c.fill = GridBagConstraints.NONE;
 		frame.add(confirm, c);
 		frame.setVisible(true);
